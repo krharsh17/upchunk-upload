@@ -1,0 +1,19 @@
+{
+  "name": "upchunk-upload",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@airplane/views": "^2.0.5-rc.1",
+    "@mux/mux-node": "^7.3.0",
+    "@mux/upchunk": "^3.1.0",
+    "airplane": "^0.2.53",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.3"
+  }
+}
