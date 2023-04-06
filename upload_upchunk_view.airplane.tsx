@@ -11,24 +11,30 @@ import * as UpChunk from '@mux/upchunk';
 // Views documentation: https://docs.airplane.dev/views/getting-started
 const UploadUpchunkView  = () => {
 
+  // Create state containers for progress and status messages
   const [progress, setProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState("");
-  const { output: result } = useTaskQuery({ slug: "upload_upchunk_task" });
+  
+  // Use a query to generate an authenticated upload URL for Upchunk
+  const { output: uploadUrl } = useTaskQuery({ slug: "upload_upchunk_task" });
 
+  // Define a function that handles file upload via UpChunk
   const handleUpload = async (inputRef) => {
-    console.log("Upload called. URL exists: " + (result !== null))
-    if (!result)
-      return
-    try {
-      const url = result;
 
+    // If the upload URL is not ready, return without uploading
+    if (!uploadUrl)
+      return
+    
+    try {
+
+      // Create an UpChunk upload instance
       const upload = UpChunk.createUpload({
-        endpoint: url, // Authenticated url
-        file: inputRef.files[0], // File object with your video file’s properties
-        chunkSize: 512, // Uploads the file in ~0.5 MB chunks
+        endpoint: uploadUrl,       // Authenticated upload url
+        file: inputRef.files[0],   // File to be uploaded
+        chunkSize: 512,            // ~0.5 MB chunk size for the upload
       });
 
-      // Subscribe to events
+      // Subscribe to progress, success, and error events
       upload.on('error', error => {
         setStatusMessage(error.detail);
       });
@@ -40,6 +46,7 @@ const UploadUpchunkView  = () => {
       upload.on('success', () => {
         setStatusMessage("File uploaded! 👋");
       });
+      
     } catch (error) {
       console.log(error);
     }
@@ -48,6 +55,7 @@ const UploadUpchunkView  = () => {
   return (
     <Stack>
         <Heading>Uploading File in Chunks</Heading>
+      
         <label htmlFor="file-picker">Select an mp4 file:</label>
         <input type="file" onChange={(e) => handleUpload(e.target)}
           id="file-picker" name="file-picker" />
