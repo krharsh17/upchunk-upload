@@ -6,6 +6,7 @@ export default airplane.task(
 	{
 		slug: "upload_upchunk_task",
 		name: "upload-upchunk-task",
+		// Extract the value of the MUX keys from the Airplane config variables
 		envVars: {
 			MUX_TOKEN: { config: "MUX_TOKEN" },
 			MUX_SECRET_KEY: { config: "MUX_SECRET_KEY" }
@@ -15,7 +16,10 @@ export default airplane.task(
 	// function will be called.
 	async () => {
 
+		// Create a new instance of the Mux Node SDK and initialize it with your credentials
 		const { Video } = new Mux(process.env.MUX_TOKEN || "", process.env.MUX_SECRET_KEY || "");
+		
+		// Use the Mux SDK to create a new authenticated upload URL
 		const muxUploadUrl = (await Video.Uploads.create({
 			cors_origin: 'https://airplane.dev',
 			new_asset_settings: {
@@ -23,8 +27,7 @@ export default airplane.task(
 			},
 		})).url;
 
-		console.log("Mux upload URL created: " + JSON.stringify(muxUploadUrl))
-
+		// Send the authenticated URL back to the view
 		return muxUploadUrl
 
 	}
