@@ -12,7 +12,7 @@ export default airplane.task(
 			MUX_SECRET_KEY: { config: "MUX_SECRET_KEY" }
 		}
 	},
-	// This is your task's entrypoint. When your task is executed, this
+	// This is your task's entry point. When your task is executed, this
 	// function will be called.
 	async () => {
 
